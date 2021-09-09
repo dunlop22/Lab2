@@ -1,13 +1,10 @@
 ﻿#include <iostream>
+#include <locale.h>
+using namespace std;
 
 using namespace std;
 
-/*
-* организовать функцию установки значений в структуры
-* организовать функцию сравнения двух машин по их int параметрам
-*/
-
-struct avto
+struct motor
 {
     struct har1
     {
@@ -58,17 +55,25 @@ public:
 
 };
 
-void automobil::set_motor(int koni1, int rasxod1, int kolvo_cilindr1)
-{
-    dannie2 = koni1;
-    dannie3 = rasxod1;
-    dannie4 = kolvo_cilindr1;
-}
 
+struct obchee
+{
+    int massa;
+    string tip_topliva;
+    string tip_privoda;
+    int kolvo_mest;
+    double razgon_do_100;
+};
+
+struct avto
+{
+    motor har1;
+    kolesa har2;
+    voditel har3;
+    korobka_peredach har4;
+    obchee har5;
+};
 int main()
 {
-    //avto qw;
-    cout << "Приветствуем вас в программе характеристик - отчета по автомобилю.";
-
-
+    std::cout << "Hello World!\n";
 }
