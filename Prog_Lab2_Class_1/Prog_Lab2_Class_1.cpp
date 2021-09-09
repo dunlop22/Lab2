@@ -2,15 +2,17 @@
 
 using namespace std;
 
-
-
+/*
+* организовать функцию установки значений в структуры
+* организовать функцию сравнения двух машин по их int параметрам
+*/
 
 struct avto
 {
     struct har1
     {
         int koni;
-        string tip_topliva;
+        
         int rasxod;
         int kol_vo_cilindr;
     } motor;
@@ -47,9 +49,26 @@ struct avto
     } obchee;
 };
 
+class automobil {
+    string dannie1;
+    int dannie2;
+    int dannie3, dannie4;
+public:
+    void set_motor(int koni1, int rasxod1, int kolvo_cilindr1);
+
+};
+
+void automobil::set_motor(int koni1, int rasxod1, int kolvo_cilindr1)
+{
+    dannie2 = koni1;
+    dannie3 = rasxod1;
+    dannie4 = kolvo_cilindr1;
+}
+
 int main()
 {
-    avto qw;
-    cin >> qw.motor.koni;
-    cout << "Hello World!\n";
+    //avto qw;
+    cout << "Приветствуем вас в программе характеристик - отчета по автомобилю.";
+
+
 }
