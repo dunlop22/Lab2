@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <locale.h>
 using namespace std;
 
 
@@ -49,5 +50,10 @@ struct avto
 };
 int main()
 {
-    std::cout << "Hello World!\n";
+    setlocale(LC_ALL, "RUS");
+    int tekuchee;
+    int vsego = 0;
+
+    cout << "Всего автомобилей: " << vsego;
+    cout << "\n\nВыберите пункт для введения данных об авто.";
 }
