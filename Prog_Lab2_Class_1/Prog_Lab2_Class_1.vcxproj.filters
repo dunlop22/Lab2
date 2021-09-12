@@ -23,5 +23,8 @@
     <ClInclude Include="strukturki.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="function.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

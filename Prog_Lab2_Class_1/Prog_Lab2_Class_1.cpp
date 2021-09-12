@@ -5,6 +5,7 @@
 #include <string>
 #include <windows.h>
 #include "strukturki.h"
+#include "function.h"
 
 using namespace std;
 
