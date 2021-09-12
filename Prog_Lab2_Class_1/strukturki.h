@@ -10,7 +10,7 @@ using namespace std;
 
 struct motor
 {
-    char name[50];
+    char name[20];
     double rab_obem;
     double koni;
     double rasxod;
@@ -21,11 +21,11 @@ struct motor
 struct voditel
 {
     double num_vod;
-    char name[50];
+    char name[20];
     double age;
     double stag;
-    char pol[50];
-    char covid_19[50];
+    char pol[20];
+    char covid_19[20];
 };
 
 struct kolesa
@@ -33,20 +33,20 @@ struct kolesa
     double shirina;
     double visota;
     double diametr;
-    char tip_diska[50];
+    char tip_diska[20];
 };
 
 struct korobka_peredach
 {
-    char tip_korobki[50];
+    char tip_korobki[20];
     double kolvo_peredach;
 };
 
 struct obchee
 {
-    char name[50];
-    char tip_privoda[50];
-    char tip_topliva[50];
+    char name[20];
+    char tip_privoda[20];
+    char tip_topliva[20];
     double massa;
     double obem_benzobaka;
     double kolvo_mest;

@@ -8,10 +8,194 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "function.h"
+#include <io.h>
+#include <fcntl.h>
 using namespace std;
 
-//сделать сравнение двух автомобилей
+void setON()
+{
+    _setmode(_fileno(stdout), _O_U16TEXT);
+    _setmode(_fileno(stdin), _O_U16TEXT);
+}
+void setOFF()
+{
+    _setmode(_fileno(stdout), O_TEXT);
+    _setmode(_fileno(stdin), O_TEXT);
+}
 
+void tip(string name)
+{
+    int i;
+    setON();
+    wcout << L"\u2551";
+    setOFF();
+    cout << name;
+    for (i = 0; i + name.length() < 23; i++)
+    {
+        cout << " ";
+    }
+}
+
+//функция для вывода верхней полосы шапки таблицы сравнения авто
+void up_polosa()
+{
+    int i;
+    setON();
+    wcout << L"\u2554";
+    for (i = 0; i < 23; i++)
+    {
+        wcout << L"\u2550";
+    }
+    wcout << L"\u2566";
+    for (i = 0; i < 23; i++)
+    {
+        wcout << L"\u2550";
+    }
+    wcout << L"\u2566";
+    for (i = 0; i < 23; i++)
+    {
+        wcout << L"\u2550";
+    }
+    wcout << L"\u2557";
+    setOFF();
+}
+
+//функция для вывода нижней полосы шапки таблицы сравнения авто
+void down_polosa()
+{
+    int i;
+    setON();
+    wcout << L"\u255A";
+    for (i = 0; i < 23; i++)
+    {
+        wcout << L"\u2550";
+    }
+    wcout << L"\u2569";
+    for (i = 0; i < 23; i++)
+    {
+        wcout << L"\u2550";
+    }
+    wcout << L"\u2569";
+    for (i = 0; i < 23; i++)
+    {
+        wcout << L"\u2550";
+    }
+    wcout << L"\u255D";
+    setOFF();
+}
+
+//функция для вывода разделительной полосы в таблице сравнения авто
+void polosa()
+{
+    int i;
+    setON();
+    wcout << L"\u2560";
+    for (i = 0; i < 23; i++)
+    {
+        wcout << L"\u2550";
+    }
+    wcout << L"\u256C";
+    for (i = 0; i < 23; i++)
+    {
+        wcout << L"\u2550";
+    }
+    wcout << L"\u256C";
+    for (i = 0; i < 23; i++)
+    {
+        wcout << L"\u2550";
+    }
+    wcout << L"\u2563";
+    setOFF();
+    cout << "\n";
+}
+
+///функция анализа данных авто
+void compare(double inf1, double inf2)
+{
+    int green = 10;
+    int black = 0;
+    int white = 15;
+
+    HANDLE  hConsole;
+    hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+
+    int temp, n, i;
+    n = 0;
+    setON();
+    wcout << L"\u2551";
+    setOFF();
+    temp = inf1;
+    n = 0;
+    while ((temp /= 10) > 0) n++;
+    if (inf1 > inf2)
+    {
+        SetConsoleTextAttribute(hConsole, (WORD)((white << 4) | green));
+        printf("%.2f", inf1);
+        SetConsoleTextAttribute(hConsole, (WORD)((white << 4) | black));
+        for (i = 0; i + n < 19; i++)
+        {
+            cout << " ";
+        }
+        setON();
+        wcout << L"\u2551";
+        setOFF();
+        temp = inf2;
+        n = 0;
+        while ((temp /= 10) > 0) n++;
+        printf("%.2f", inf2);
+        for (i = 0; i + n < 19; i++)
+        {
+            cout << " ";
+        }
+    }
+    else if (inf1 < inf2)
+    {
+        printf("%.2f", inf1);
+        for (i = 0; i + n < 19; i++)
+        {
+            cout << " ";
+        }
+        setON();
+        wcout << L"\u2551";
+        setOFF();
+        temp = inf2;
+        n = 0;
+        while ((temp /= 10) > 0) n++;
+        SetConsoleTextAttribute(hConsole, (WORD)((white << 4) | green));
+        printf("%.2f", inf2);
+        SetConsoleTextAttribute(hConsole, (WORD)((white << 4) | black));
+        for (i = 0; i + n < 19; i++)
+        {
+            cout << " ";
+        }
+    }
+    else
+    {
+        printf("%.2f", inf1);
+        for (i = 0; i + n < 19; i++)
+        {
+            cout << " ";
+        }
+        setON();
+        wcout << L"\u2551";
+        setOFF();
+        temp = inf2;
+        n = 0;
+        while ((temp /= 10) > 0) n++;
+        printf("%.2f", inf2);
+        for (i = 0; i + n < 19; i++)
+        {
+            cout << " ";
+        }
+    }
+    setON();
+    wcout << L"\u2551";
+    setOFF();
+    cout << "\n";
+}
+
+//функция главного меню
 int gl_menu(int vsego, int kol_vo_vodit)
 {
     int menu;
@@ -478,7 +662,7 @@ void del_avto(struct avto* mashina, int *vsego, struct voditel *vod)
 }
 
 //функция удаления информации о водителе
-void del_vod(struct voditel* vod, int* kol_vo_vodit)
+void del_vod(struct voditel* vod, int* kol_vo_vodit, struct avto *mashina, int vsego)
 {
     int numb, i;
     do
@@ -498,6 +682,14 @@ void del_vod(struct voditel* vod, int* kol_vo_vodit)
         vod[i] = vod[i + 1];
     }
     *kol_vo_vodit = *kol_vo_vodit - 1;
+
+    for (i = 0; i < vsego; i++)
+    {
+        if (mashina[i].vod == numb - 1)
+        {
+            mashina[i].vod = -1;
+        }
+    }
 }
 
 //функция создания связи между водителем и авто
@@ -507,10 +699,9 @@ void create_vod_avto(struct avto* mashina, int vsego, int kol_vo_vodit, struct v
     do
     {
         system("cls");
-        prosmotr_avto(vsego, mashina, vod);
         for (i = 0; i < vsego; i++)
         {
-            cout << i + 1 << ")" << mashina[i].har5.name;
+            cout << i + 1 << ") " << mashina[i].har5.name << "\n";
         }
         cout << "\n\nВведите номер авто для привязки водителя: ";
         scanf("%d", &numb);
@@ -531,18 +722,137 @@ void create_vod_avto(struct avto* mashina, int vsego, int kol_vo_vodit, struct v
 //функция сравнения двух автомобилей
 void compare_avto(int vsego, struct avto *mashina, struct voditel *vod)
 {
-    
     int numb1, numb2, i;
     do
     {
         system("cls");
-        prosmotr_avto(vsego, mashina, vod);
+        for (i = 0; i < vsego; i++)
+        {
+            cout << i + 1 << ") " << mashina[i].har5.name << "\n";
+        }
+        cout << "\n\nВведите номер первого авто для сравнения: ";
+        scanf("%d", &numb1);
+        while (getchar() != '\n');
+    } while (numb1 < 1 || numb1 > vsego);
+    do
+    {
+        system("cls");
+        for (i = 0; i < vsego; i++)
+        {
+            cout << i + 1 << ") " << mashina[i].har5.name << "\n";
+        }
+        cout << "\n\nВведите номер второго авто для сравнения: ";
+        scanf("%d", &numb2);
+        while (getchar() != '\n');
+        if (numb1 == numb2)
+        {
+            numb2 = 0;
+        }
+    } while (numb2 < 1 || numb2 > vsego);
 
-    } while (numb == 0);
+    //сравнение основных пунктов
+    system("cls");
+    int green = 10;
+    int black = 0;
+    int white = 15;
+    int temp, n;
+    n = 0;
+
+    HANDLE  hConsole;
+    hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+
+    SetConsoleTextAttribute(hConsole, (WORD)((white << 4) | green));
+    SetConsoleTextAttribute(hConsole, (WORD)((white << 4) | black));
+    cout << "Зеленым выделены большие значения\n\n";
+    up_polosa();
+    cout << "\n";
+    setON();
+    wcout << L"\u2551";
+    setOFF();
+    for (i = 0; i < 23; i++)
+    {
+        cout << " ";
+    }
+    setON();
+    wcout << L"\u2551";
+    setOFF();
+
+    cout << mashina[numb1 - 1].har5.name;
+    for (i = 0; i + strlen(mashina[numb1 - 1].har5.name) < 23; i++)
+    {
+        cout << " ";
+    }
+    setON();
+    wcout << L"\u2551";
+    setOFF();
+    cout << mashina[numb2 - 1].har5.name;
+    for (i = 0; i + strlen(mashina[numb2 - 1].har5.name) < 23; i++)
+    {
+        cout << " ";
+    }
+    setON();
+    wcout << L"\u2551";
+    setOFF();
+    cout << "\n";
+
+    polosa();
+    tip("Кол-во клапанов");
+    compare(mashina[numb1 - 1].har2.klapan, mashina[numb2 - 1].har2.klapan);
+    polosa();
+    tip("Кол-во цилиндров");
+    compare(mashina[numb1 - 1].har2.kol_vo_cilindr, mashina[numb2 - 1].har2.kol_vo_cilindr);
+    polosa();
+    tip("Кол - во л.с.");
+    compare(mashina[numb1 - 1].har2.koni, mashina[numb2 - 1].har2.koni);
+    polosa();
+    tip("Рабочий объем");
+    compare(mashina[numb1 - 1].har2.rab_obem, mashina[numb2 - 1].har2.rab_obem);
+    polosa();
+    tip("Расход на 100");
+    compare(mashina[numb1 - 1].har2.rasxod, mashina[numb2 - 1].har2.rasxod);
+    polosa();
+    
+    tip("Диаметр колеса");
+    compare(mashina[numb1 - 1].har3.diametr, mashina[numb2 - 1].har3.diametr);
+    polosa();
+    tip("Высота колеса");
+    compare(mashina[numb1 - 1].har3.visota, mashina[numb2 - 1].har3.visota);
+    polosa();
+    tip("Ширина колеса");
+    compare(mashina[numb1 - 1].har3.shirina, mashina[numb2 - 1].har3.shirina);
+    polosa();
+    tip("Колв-во передач");
+    compare(mashina[numb1 - 1].har4.kolvo_peredach, mashina[numb2 - 1].har4.kolvo_peredach);
+    polosa();
+    tip("Кол-во мест");
+    compare(mashina[numb1 - 1].har5.kolvo_mest, mashina[numb2 - 1].har5.kolvo_mest);
+    polosa();
+    tip("Масса");
+    compare(mashina[numb1 - 1].har5.massa, mashina[numb2 - 1].har5.massa);
+    polosa();
+    tip("Объем бензобака");
+    compare(mashina[numb1 - 1].har5.obem_benzobaka, mashina[numb2 - 1].har5.obem_benzobaka);
+    polosa();
+    tip("Разгон до 100");
+    compare(mashina[numb1 - 1].har5.razgon_do_100, mashina[numb2 - 1].har5.razgon_do_100);
+    down_polosa();
+    
+    cout << "\n\nНажмите любую клавишу для возврата в меню";
+    _getch();
+
+
+
 }
 
 int main()
 {
+    int black = 0;
+    int white = 15;
+    HANDLE  hConsole;
+    hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    SetConsoleTextAttribute(hConsole, (WORD)((white << 4) | black));
     setlocale(LC_ALL, "Rus");
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
@@ -599,7 +909,7 @@ int main()
         }
         if (menu == 8)  //удаление информации о водителе
         {
-            del_vod(vod, &kol_vo_vodit);
+            del_vod(vod, &kol_vo_vodit, mashina, vsego);
         }
         if (menu == 9)  //удаление информации об автомобиле
         {
