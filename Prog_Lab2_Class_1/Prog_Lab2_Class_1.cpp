@@ -12,8 +12,7 @@
 using namespace std;
 
 //сделать привязку водителя к автомобилю
-//сделать удаление водителя
-
+//сделать сравнение двух автомобилей
 
 
 //           while (getchar() != '\n');   - очистка буфера
@@ -38,6 +37,10 @@ int gl_menu(int vsego, int kol_vo_vodit)
         if (vsego > 1)
         {
             cout << "\n5) Сравнение автомобилей";
+        }
+        if (vsego > 0 && kol_vo_vodit > 0)
+        {
+            cout << "7) Создать привязку автомобиль/водитель";
         }
         if (kol_vo_vodit > 0)
         {
@@ -76,7 +79,7 @@ int gl_menu(int vsego, int kol_vo_vodit)
         }
         if (menu == '8' && kol_vo_vodit > 0)
         {
-            return 9;
+            return 8;
         }
         if (menu == '9' && vsego > 0)
         {
@@ -282,6 +285,7 @@ void new_voditel(int teck_voditel, struct voditel *vod, int *vsego_vodit, int re
 {
     if (red == 0)
     {
+        teck_voditel = *vsego_vodit;
         system("cls");
         cout << "Добавление информации о водителе\n\n";
     }
@@ -476,6 +480,34 @@ void compare_avto(int vsego)
 
 }
 
+//функция удаления информации о водителе
+void del_vod(struct voditel* vod, int* kol_vo_vodit)
+{
+    int numb, i;
+    do
+    {
+        system("cls");
+        prosmotr_voditel(*kol_vo_vodit, vod);
+        cout << "\n\nВведите номер водителя для удаления: ";
+        scanf("%d", &numb);
+        while (getchar() != '\n');
+    } while (numb < 1 || numb > *kol_vo_vodit);
+        
+    for (i = numb - 1; i < *kol_vo_vodit - 1; i++)
+    {
+        struct voditel* vod_dubl;
+        vod_dubl = (voditel*)malloc(1 * sizeof(voditel));
+        *vod_dubl = vod[i];
+        vod[i] = vod[i + 1];
+    }
+    *kol_vo_vodit = *kol_vo_vodit - 1;
+}
+
+//функция создания связи между водителем и авто
+void create_vod_avto()
+{
+}
+
 int main()
 {
     setlocale(LC_ALL, "Rus");
@@ -529,9 +561,13 @@ int main()
             cout << "сравнение автомобилей";
             _getch();
         }
+        if (menu == 7)
+        {
+            create_vod_avto();
+        }
         if (menu == 8)  //удаление информации о водителе
         {
-            del_vod();
+            del_vod(vod, &kol_vo_vodit);
         }
         if (menu == 9)  //удаление информации об автомобиле
         {
