@@ -13,8 +13,9 @@ struct motor
 {
     string name;
     int koni;
-    int rasxod;
+    double rasxod;
     int kol_vo_cilindr;
+    int klapan;
 };
 
 struct voditel
@@ -46,6 +47,7 @@ struct obchee
     string name;
     string tip_privoda;
     string tip_topliva;
+    int massa;
     int obem_benzobaka;
     int kolvo_mest;
     double razgon_do_100;
@@ -107,19 +109,68 @@ int gl_menu(int vsego, int kol_vo_vodit)
 }
 
 //функция добавления информации о новом автомобиле
-void new_car(int tekuchee, struct avto qw[10])
+void new_car(int tekuchee, struct avto mashina[10])
 {
-    cout << "Введите название мотора: ";
-    getline(std::cin, qw[tekuchee].har2.name);
-    cout << "\n\n" << qw[tekuchee].har2.name << "\n\n";
-    cout << "Введите количество лошадинных сил мотора: ";
-    cin >> qw[tekuchee].har2.koni;
-    cout << qw[tekuchee].har2.koni;
-    cout << "Введите количество цилиндров в моторе: ";
-    cin >> qw[tekuchee].har2.kol_vo_cilindr;
 
+    cout << "Добавление информации о двигателе\n\nВведите маркировку двигателя: ";
+    getline(std::cin, mashina[tekuchee].har2.name);
+    //cout << "\n\n" << qw[tekuchee].har2.name << "\n\n";
+    cout << "Введите количество лошадинных сил: ";
+    cin >> mashina[tekuchee].har2.koni;
+    cout << "Введите средний расход топлива на 100км в литрах: ";
+    cin >> mashina[tekuchee].har2.rasxod;
+    //cout << qw[tekuchee].har2.koni;
+    cout << "Введите количество цилиндров: ";
+    cin >> mashina[tekuchee].har2.kol_vo_cilindr;
+    cout << "Введите количество клапанов на один цилиндр: ";
+    cin >> mashina[tekuchee].har2.klapan;
+
+
+
+    cout << "Добавление информации о коробке передач автомобиля\n\nВведите тип коробки передач (АКПП/МКПП): ";
+    cin >> mashina[tekuchee].har4.tip_korobki;
+    cout << "Введите количество передач коробки: ";
+    cin >> mashina[tekuchee].har4.kolvo_peredach;
+
+    cout << "Добавление информации о колесах автомобиля\n\nВведите ширину колеса: ";
+    cin >> mashina[tekuchee].har3.shirina;
+    cout << "Введите диаметр колеса в дюймах: ";
+    cin >> mashina[tekuchee].har3.diametr;
+    cout << "Введите высоту колеса: ";
+    cin >> mashina[tekuchee].har3.visota;
+    cout << "Введите тип колесного диска (штамповка/литье/ковка): ";
+    cin >> mashina[tekuchee].har3.tip_diska;
+
+    cout << "Добавление общей информации об автомобиле\n\nВведите модель автомобиля: ";
+    cin >> mashina[tekuchee].har5.name;
+    cout << "Введите тип привода (2WD/4WD)";
+    cin >> mashina[tekuchee].har5.tip_privoda;
+    cout << "Введите тип топлива (бензин/дизель/электро): ";
+    cin >> mashina[tekuchee].har5.tip_topliva;
+    cout << "Введите количество посадочных мест: ";
+    cin >> mashina[tekuchee].har5.kolvo_mest;
+    cout << "Введите время разгона до 100км/ч: ";
+    cin >> mashina[tekuchee].har5.razgon_do_100;
+    cout << "Введите массу автомобиля: ";
+    cin >> mashina[tekuchee].har5.massa;
+    cout << "Введите объем бензобака в литрах: ";
+    cin >> mashina[tekuchee].har5.obem_benzobaka;
 }
 
+void new_voditel(int teck_voditel, struct voditel vod[10])
+{
+    vod[teck_voditel].num_vod = teck_voditel;
+    cout << "Добавление информации о водителе\n\nВведите ФИО водителя: ";
+    cin >> vod[teck_voditel].name;
+    cout << "Введите возраст: ";
+    cin >> vod[teck_voditel].age;
+    cout << "Введите пол водителя (М/Ж): ";
+    cin >> vod[teck_voditel].pol;
+    cout << "Введите статус Covid-19 (переболел/привит/неизвестно): ";
+    cin >> vod[teck_voditel].covid_19;
+    cout << "Введите стаж водителя: ";
+    cin >> vod[teck_voditel].stag;
+}
 //функция вывода информации о текущих автомобилях
 void prosmotr_avto(int vsego)
 {
@@ -141,15 +192,18 @@ int main()
     int tekuchee = 0;
     int menu;
     int kol_vo_vodit = 0;
-    avto qw[10];    //создание массива автомобилей
+    int teck_voditel = 0;
+    avto mashina[10];    //создание массива автомобилей
+    voditel vod[10];    //создание массива водителей
     menu = gl_menu(vsego, kol_vo_vodit);
     if (menu == 1)
     {
-        new_car(tekuchee, qw);
+        new_car(tekuchee, mashina);
     }
     else if (menu == 2)
     {
-        prosmotr_avto(vsego);
+        new_voditel(teck_voditel, vod);
+        //prosmotr_avto(vsego);
     }
     else if (menu == 3)
     {
