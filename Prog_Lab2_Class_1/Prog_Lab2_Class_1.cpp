@@ -8,14 +8,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "function.h"
-
 using namespace std;
 
-//сделать привязку водителя к автомобилю
 //сделать сравнение двух автомобилей
-
-
-//           while (getchar() != '\n');   - очистка буфера
 
 int gl_menu(int vsego, int kol_vo_vodit)
 {
@@ -40,7 +35,7 @@ int gl_menu(int vsego, int kol_vo_vodit)
         }
         if (vsego > 0 && kol_vo_vodit > 0)
         {
-            cout << "7) Создать привязку автомобиль/водитель";
+            cout << "\n7) Создать привязку автомобиль/водитель";
         }
         if (kol_vo_vodit > 0)
         {
@@ -76,6 +71,10 @@ int gl_menu(int vsego, int kol_vo_vodit)
         if (menu == '5' && vsego > 1)
         {
             return 5;
+        }
+        if (menu == '7')
+        {
+            return 7;
         }
         if (menu == '8' && kol_vo_vodit > 0)
         {
@@ -273,6 +272,7 @@ void new_car(int tekuchee, struct avto *mashina, int *vsego)
 {
     system("cls");
     tekuchee = *vsego;
+    mashina[tekuchee].vod = -1;
     new_obchee(tekuchee, mashina);
     new_motor(tekuchee, mashina);
     new_koleso(tekuchee, mashina);
@@ -407,7 +407,7 @@ void vivod_kolesa(int tekuchee, struct avto* mashina)
 }
 
 //функция вывода информации о текущих автомобилях
-void prosmotr_avto(int vsego, struct avto *mashina)
+void prosmotr_avto(int vsego, struct avto *mashina, struct voditel *vod)
 {
     int i;
     for (i = 0; i < vsego; i++)
@@ -417,6 +417,10 @@ void prosmotr_avto(int vsego, struct avto *mashina)
         vivod_motor(i, mashina);
         vivod_kolesa(i, mashina);
         vivod_korobka(i, mashina);
+        if (mashina[i].vod != -1)
+        {
+            cout << "\n\nВодитель: " << vod[mashina[i].vod].name;
+        }
         cout << "\n****************************\n";
     }
 }
@@ -450,13 +454,13 @@ void red_voditel(struct voditel *vod, int *kol_vo_vodit)
 }
 
 //функция удаления информации об авто
-void del_avto(struct avto* mashina, int *vsego)
+void del_avto(struct avto* mashina, int *vsego, struct voditel *vod)
 {
     int numb, i;
     do
     {
         system("cls");
-        prosmotr_avto(*vsego, mashina);
+        prosmotr_avto(*vsego, mashina, vod);
         cout << "\n\nВведите номер авто для удаления: ";
         scanf("%d", &numb);
         while (getchar() != '\n');
@@ -471,13 +475,6 @@ void del_avto(struct avto* mashina, int *vsego)
         mashina[i] = mashina[i + 1];
     }
     *vsego = *vsego - 1;
-    
-}
-
-//функция сравнения двух автомобилей
-void compare_avto(int vsego)
-{
-
 }
 
 //функция удаления информации о водителе
@@ -504,8 +501,44 @@ void del_vod(struct voditel* vod, int* kol_vo_vodit)
 }
 
 //функция создания связи между водителем и авто
-void create_vod_avto()
+void create_vod_avto(struct avto* mashina, int vsego, int kol_vo_vodit, struct voditel *vod)
 {
+    int i, numb, numb_vod;
+    do
+    {
+        system("cls");
+        prosmotr_avto(vsego, mashina, vod);
+        for (i = 0; i < vsego; i++)
+        {
+            cout << i + 1 << ")" << mashina[i].har5.name;
+        }
+        cout << "\n\nВведите номер авто для привязки водителя: ";
+        scanf("%d", &numb);
+        while (getchar() != '\n');
+    } while (numb < 1 || numb > vsego);
+
+    do
+    {
+        system("cls");
+        prosmotr_voditel(kol_vo_vodit, vod);
+        cout << "\n\nВведите номер водителя для привязки к автомобилю " << mashina[numb - 1].har5.name << ": ";
+        scanf("%d", &numb_vod);
+        while (getchar() != '\n');
+    } while (numb_vod < 1 || numb_vod > kol_vo_vodit);
+    mashina[numb - 1].vod = numb_vod - 1;
+}
+
+//функция сравнения двух автомобилей
+void compare_avto(int vsego, struct avto *mashina, struct voditel *vod)
+{
+    
+    int numb1, numb2, i;
+    do
+    {
+        system("cls");
+        prosmotr_avto(vsego, mashina, vod);
+
+    } while (numb == 0);
 }
 
 int main()
@@ -545,7 +578,7 @@ int main()
         else if (menu == 3) //просмотр информации об автомобилях
         {
             system("cls");
-            prosmotr_avto(vsego, mashina);
+            prosmotr_avto(vsego, mashina, vod);
             cout << "\n\nНажмите любую клавишу для возврата в меню";
             _getch();
         }
@@ -558,12 +591,11 @@ int main()
         }
         else if (menu == 5) //сравнение двух автомобилей
         {
-            cout << "сравнение автомобилей";
-            _getch();
+            compare_avto(vsego, mashina, vod);
         }
         if (menu == 7)
         {
-            create_vod_avto();
+            create_vod_avto(mashina, vsego, kol_vo_vodit, vod);
         }
         if (menu == 8)  //удаление информации о водителе
         {
@@ -571,14 +603,8 @@ int main()
         }
         if (menu == 9)  //удаление информации об автомобиле
         {
-            del_avto(mashina, &vsego);
+            del_avto(mashina, &vsego, vod);
         }
-        /*
-        else if (menu == 3)
-        {
-            compare_avto(vsego);
-        }
-        */
         else if (menu == 27)
         {
             exit;
