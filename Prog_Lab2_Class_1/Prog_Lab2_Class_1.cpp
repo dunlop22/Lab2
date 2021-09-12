@@ -5,6 +5,8 @@
 #include <string>
 #include <windows.h>
 #include "strukturki.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include "function.h"
 
 using namespace std;
@@ -94,15 +96,19 @@ int gl_menu(int vsego, int kol_vo_vodit)
 
         if (vsego > 1 && kol_vo_vodit > 0)
         {
-            cout << "5) Сравнение автомобилей";
+            cout << "\n5) Сравнение автомобилей";
         }
         else if (vsego > 1 && kol_vo_vodit == 0)
         {
-            cout << "4) Сравнение автомобилей";
+            cout << "\n4) Сравнение автомобилей";
         }
-        if (vsego > 0)
+        if (vsego > 1)
         {
-            cout << "0) Изменение информации об автомобиле";
+            cout << "\n9) Удалить информацию об автомобиле";
+        }
+        if (kol_vo_vodit > 0)
+        {
+            cout << "\n0) Изменение информации о водителе";
         }
         cout << "\n\nESC - выход";
         menu = _getch();
@@ -142,89 +148,97 @@ int gl_menu(int vsego, int kol_vo_vodit)
         {
             return 27;
         }
-        
     } while (true);
-    //} while (menu != '1' && menu != '2' && menu != '3' && menu != '4' && menu != '5' && menu != 27);
-    //system("cls");
-    //return int(menu - 48);
-
-    /*
-    printf("Введите N (1 или 2): ");
-    do
-    {
-        scanf("%d", &N);
-        if (N != 1 && N != 2)
-        {
-            printf("Значение N не удовлетворяет условию\n");
-        }
-    } while (N != 1 && N != 2);
-    */
-    return menu;
 }
 
-void new_motor(int tekuchee, struct avto mashina[10], int t)
+void new_motor(int tekuchee, struct avto *mashina)
 {
-    
-    /*cout << "1) Маркировка двигателя: " << mashina[tekuchee].har2.name;
-    cout << "2) \nМощность (л.с.): " << mashina[tekuchee].har2.koni;
-    cout << "3) \nСредний расход на 100км: " << mashina[tekuchee].har2.rasxod;
-    cout << "4) \nКоличество цилиндров: " << mashina[tekuchee].har2.kol_vo_cilindr;
-    cout << "5) \nКоличество клапанов на 1 цилиндр: " << mashina[tekuchee].har2.klapan;
-    if (t == 0)
-    {
-        cout << "0) \n\nСохранить изменения и выйти";
-    }
-    else
-    {
-
-    }*/
     system("cls");
     cout << "Добавление информации о двигателе\n\nВведите маркировку двигателя: ";
-    getline(std::cin, mashina[tekuchee].har2.name);
-    //cout << "\n\n" << qw[tekuchee].har2.name << "\n\n";
-    cout << "Введите рабочий объем в литрах: ";
-    cin >> mashina[tekuchee].har2.rab_obem;
+    gets_s(mashina[tekuchee].har2.name);
+    while (strlen(mashina[tekuchee].har2.name) == 0)
+    {
+        printf("Неверно введенна маркировка двигателя, попробуйте еще: ");
+        gets_s(mashina[tekuchee].har2.name);
+    }
+    cout << "Введите рабочий объем двигателя в литрах: ";
+    while (scanf("%lf", &mashina[tekuchee].har2.rab_obem) != 1)
+    {
+        printf("Неверно введенно значение объема двигателя, попробуйте еще: ");
+        while (getchar() != '\n');
+    }
     cout << "Введите количество лошадинных сил: ";
-    cin >> mashina[tekuchee].har2.koni;
+    while (scanf("%lf", &mashina[tekuchee].har2.koni) != 1)
+    {
+        printf("Неверно введенно значение количества лошадиных сил, попробуйте еще: ");
+        while (getchar() != '\n');
+    }
     cout << "Введите средний расход топлива на 100км в литрах: ";
-    cin >> mashina[tekuchee].har2.rasxod;
-    //cout << qw[tekuchee].har2.koni;
+    while (scanf("%lf", &mashina[tekuchee].har2.rasxod) != 1)
+    {
+        printf("Неверно введенно значение расхода на 100км, попробуйте еще: ");
+        while (getchar() != '\n');
+    }
     cout << "Введите количество цилиндров: ";
-    cin >> mashina[tekuchee].har2.kol_vo_cilindr;
+    while (scanf("%lf", &mashina[tekuchee].har2.kol_vo_cilindr) != 1)
+    {
+        printf("Неверно введенно значение количества цилиндров, попробуйте еще: ");
+        while (getchar() != '\n');
+    }
     cout << "Введите количество клапанов на один цилиндр: ";
-    cin >> mashina[tekuchee].har2.klapan;
+    while (scanf("%lf", &mashina[tekuchee].har2.klapan) != 1)
+    {
+        printf("Неверно введенно значение количества клапанов, попробуйте еще: ");
+        while (getchar() != '\n');
+    }
 }
     
 //функция добавления информации о коробке передач
-void new_korobka(int tekuchee, struct avto mashina[10], int t)
+void new_korobka(int tekuchee, struct avto *mashina)
 {
     system("cls");
     cout << "Добавление информации о коробке передач автомобиля\n\nВведите тип коробки передач (АКПП/МКПП): ";
-    cin >> mashina[tekuchee].har4.tip_korobki;
+    gets_s(mashina[tekuchee].har4.tip_korobki);
+    while (strlen(mashina[tekuchee].har4.tip_korobki) == 0)
+    {
+        printf("Неверно введенна модель автомобиля, попробуйте еще: ");
+        gets_s(mashina[tekuchee].har4.tip_korobki);
+    }
     cout << "Введите количество передач коробки: ";
-    cin >> mashina[tekuchee].har4.kolvo_peredach;
+    while (scanf("%lf", &mashina[tekuchee].har4.kolvo_peredach) != 1)
+    {
+        printf("Неверно введенно значение количества передач, попробуйте еще: ");
+        while (getchar() != '\n');
+    }
 }
 
 //функция добавления общей информации об автомобиле
-void new_obchee(int tekuchee, struct avto mashina[10], int t)
+void new_obchee(int tekuchee, struct avto *mashina)
 {
     system("cls");
     cout << "Добавление общей информации об автомобиле\n\nВведите модель автомобиля: ";
-    std::getline(std::cin, mashina[tekuchee].har5.name);
-    if (((mashina[tekuchee].har5.name).length()) == 0)
+    gets_s(mashina[tekuchee].har5.name);
+    while (strlen(mashina[tekuchee].har5.name) == 0)
     {
-        cout << "0";
-    }
-    else
-    {
-        cout << "4356467";
+        printf("Неверно введенна модель автомобиля, попробуйте еще: ");
+        gets_s(mashina[tekuchee].har5.name);
     }
     cout << "Введите тип привода (2WD/4WD): ";
-    std::getline(std::cin, mashina[tekuchee].har5.tip_privoda);
+    gets_s(mashina[tekuchee].har5.tip_privoda);
+    while (strlen(mashina[tekuchee].har5.tip_privoda) == 0)
+    {
+        printf("Неверно введенн тип привода, попробуйте еще: ");
+        gets_s(mashina[tekuchee].har5.tip_privoda);
+    }
     cout << "Введите тип топлива (бензин/дизель/электро): ";
-    std::getline(std::cin, mashina[tekuchee].har5.tip_topliva);
+    gets_s(mashina[tekuchee].har5.tip_topliva);
+    while (strlen(mashina[tekuchee].har5.tip_topliva) == 0)
+    {
+        printf("Неверно введенн тип топлива, попробуйте еще: ");
+        gets_s(mashina[tekuchee].har5.tip_topliva);
+    }
     cout << "Введите количество посадочных мест: ";
-    while (scanf("%d", &mashina[tekuchee].har5.kolvo_mest) != 1)
+    while (scanf("%lf", &mashina[tekuchee].har5.kolvo_mest) != 1)
     {
         printf("Неверно введенно значение количества посадочных мест, попробуйте еще: ");
         while (getchar() != '\n');
@@ -237,9 +251,7 @@ void new_obchee(int tekuchee, struct avto mashina[10], int t)
         while (getchar() != '\n');
     }
     while (getchar() != '\n');
-    //scanf("%lf", &mashina[tekuchee].har5.razgon_do_100);
     cout << "Введите массу автомобиля: ";
-    //scanf("%d", &mashina[tekuchee].har5.massa);
     while (scanf("%lf", &mashina[tekuchee].har5.massa) != 1)
     {
         printf("Неверно введенно значение массы, попробуйте еще: ");
@@ -247,7 +259,6 @@ void new_obchee(int tekuchee, struct avto mashina[10], int t)
     }
     while (getchar() != '\n');
     cout << "Введите объем бензобака в литрах: ";
-    //scanf("%d", &mashina[tekuchee].har5.obem_benzobaka);
     while (scanf("%lf", &mashina[tekuchee].har5.obem_benzobaka) != 1)
     {
         printf("Неверно введенно значение объема бензобака, попробуйте еще: ");
@@ -259,31 +270,49 @@ void new_obchee(int tekuchee, struct avto mashina[10], int t)
 //функция добавления информации о колесах автомобиля
 
 //функция добавления информации о новом автомобиле
-void new_koleso(int tekuchee, struct avto mashina[10], int t)
+void new_koleso(int tekuchee, struct avto *mashina)
 {
     system("cls");
     cout << "Добавление информации о колесах автомобиля\n\nВведите ширину колеса: ";
-    cin >> mashina[tekuchee].har3.shirina;
+    while (scanf("%lf", &mashina[tekuchee].har3.shirina) != 1)
+    {
+        printf("Неверно введенно значение ширины колеса, попробуйте еще: ");
+        while (getchar() != '\n');
+    }
+    
     cout << "Введите диаметр колеса в дюймах: ";
-    cin >> mashina[tekuchee].har3.diametr;
+    while (scanf("%lf", &mashina[tekuchee].har3.diametr) != 1)
+    {
+        printf("Неверно введенно значение диаметра колеса, попробуйте еще: ");
+        while (getchar() != '\n');
+    }
     cout << "Введите высоту колеса: ";
-    cin >> mashina[tekuchee].har3.visota;
+    while (scanf("%lf", &mashina[tekuchee].har3.visota) != 1)
+    {
+        printf("Неверно введенно значение высоты колеса, попробуйте еще: ");
+        while (getchar() != '\n');
+    }
     cout << "Введите тип колесного диска (штамповка/литье/ковка): ";
-    cin >> mashina[tekuchee].har3.tip_diska;
+    while (scanf("%lf", &mashina[tekuchee].har3.tip_diska) != 1)
+    {
+        printf("Неверно введенн тип колесного диска, попробуйте еще: ");
+        while (getchar() != '\n');
+    }
 }
 
-void new_car(int tekuchee, struct avto mashina[10], int *vsego)
+void new_car(int tekuchee, struct avto *mashina, int *vsego)
 {
     system("cls");
-    new_obchee(tekuchee, mashina, 0);
-    new_motor(tekuchee, mashina, 0);
-    new_koleso(tekuchee, mashina, 0);
-    new_korobka(tekuchee, mashina, 0);
+    new_obchee(tekuchee, mashina);
+    new_motor(tekuchee, mashina);
+    new_koleso(tekuchee, mashina);
+    new_korobka(tekuchee, mashina);
     *vsego = *vsego + 1;
 }
 
-void new_voditel(int teck_voditel, struct voditel vod[10], int *vsego_vodit)
+void new_voditel(int teck_voditel, struct voditel *vod, int *vsego_vodit)
 {
+    /*
     system("cls");
     vod[teck_voditel].num_vod = teck_voditel;
     cout << "Добавление информации о водителе\n\nВведите ФИО водителя: ";
@@ -298,6 +327,7 @@ void new_voditel(int teck_voditel, struct voditel vod[10], int *vsego_vodit)
     cout << "Введите стаж водителя: ";
     cin >> vod[teck_voditel].stag;
     *vsego_vodit = *vsego_vodit + 1;
+    */
 }
 
 
@@ -320,7 +350,7 @@ void prosmotr_voditel(int vsego_vodit, struct voditel vod[10])
     _getch();
 }
 
-void vivod_motor(int tekuchee, struct avto mashina[10])
+void vivod_motor(int tekuchee, struct avto *mashina)
 {
     cout << "\n1) Маркировка двигателя: " << mashina[tekuchee].har2.name;
     cout << "\n2) Рабочий объем: " << mashina[tekuchee].har2.rab_obem;
@@ -330,7 +360,7 @@ void vivod_motor(int tekuchee, struct avto mashina[10])
     cout << "\n6) Количество клапанов на 1 цилиндр: " << mashina[tekuchee].har2.klapan;
 }
 
-void vivod_obchee(int tekuchee, struct avto mashina[10])
+void vivod_obchee(int tekuchee, struct avto *mashina)
 {
     cout << "\n1) Модель: " << mashina[tekuchee].har5.name;
     cout << "\n2) Тип привода: " << mashina[tekuchee].har5.tip_privoda;
@@ -338,15 +368,16 @@ void vivod_obchee(int tekuchee, struct avto mashina[10])
     cout << "\n4) Количество посадочных мест: " << mashina[tekuchee].har5.kolvo_mest;
     cout << "\n5) Время разгона до 100км/ч: " << mashina[tekuchee].har5.razgon_do_100;
     cout << "\n6) Объем бензобака: " << mashina[tekuchee].har5.obem_benzobaka;
+    cout << "\n7) Масса: " << mashina[tekuchee].har5.massa;
 }
 
 //функция вывода информации о текущих автомобилях
-void prosmotr_avto(int vsego, struct avto mashina[10])
+void prosmotr_avto(int vsego, struct avto *mashina)
 {
     int i;
     for (i = 0; i < vsego; i++)
     {
-        vivod_motor(i, mashina);
+        //vivod_motor(i, mashina);
         vivod_obchee(i, mashina);
     }
 
@@ -369,15 +400,20 @@ int main()
     int menu;
     int kol_vo_vodit = 0;
     int teck_voditel = 0;
-    avto mashina[10];    //создание массива автомобилей
+
+    /*avto mashina[10];    //создание массива автомобилей
     voditel vod[10];    //создание массива водителей
+    */
+    struct avto *mashina;    //создание массива автомобилей
+    struct voditel *vod;    //создание массива водителей
+    int num_avto = 10;
+    mashina = (avto*)malloc(num_avto * sizeof(avto));
     do
     {
         menu = gl_menu(vsego, kol_vo_vodit);
         if (menu == 0)
         {
-            prosmotr_avto(vsego, mashina);
-            //редактирование информации об автомобилях
+            //редактирование информации о водителе
             //вывести список для выбора автомобиля для редактирования   
         }
         if (menu == 1)
@@ -386,7 +422,7 @@ int main()
         }
         else if (menu == 2)
         {
-            new_voditel(teck_voditel, vod, &kol_vo_vodit);
+            //new_voditel(teck_voditel, &vod, &kol_vo_vodit);
             //prosmotr_avto(vsego);
         }
         else if (menu == 3)
@@ -395,7 +431,7 @@ int main()
         }
         else if (menu == 4)
         {
-            prosmotr_voditel(kol_vo_vodit, vod);
+            //prosmotr_voditel(kol_vo_vodit, &vod);
         }
         else if (menu == 5)
         {
@@ -404,7 +440,7 @@ int main()
         }
         else if (menu == 6)
         {
-            prosmotr_voditel(kol_vo_vodit, vod);
+            //prosmotr_voditel(kol_vo_vodit, &vod);
         }
         else if (menu == 7)
         {

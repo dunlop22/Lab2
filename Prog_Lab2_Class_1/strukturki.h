@@ -10,52 +10,51 @@ using namespace std;
 
 struct motor
 {
-    string name;
-    int rab_obem;
-    int koni;
+    char name[50];
+    double rab_obem;
+    double koni;
     double rasxod;
-    int kol_vo_cilindr;
-    int klapan;
+    double kol_vo_cilindr;
+    double klapan;
 };
 
 struct voditel
 {
-    int num_vod;
-    string name;
-    int age;
-    int stag;
-    string pol;
-    string covid_19;
+    double num_vod;
+    char name[50];
+    double age;
+    double stag;
+    char pol[50];
+    char covid_19[50];
 };
 
 struct kolesa
 {
-    int shirina;
-    int visota;
-    int diametr;
-    string tip_diska;
+    double shirina;
+    double visota;
+    double diametr;
+    char tip_diska[50];
 };
 
 struct korobka_peredach
 {
-    string tip_korobki;
-    int kolvo_peredach;
+    char tip_korobki[50];
+    double kolvo_peredach;
 };
 
 struct obchee
 {
-    string name;
-    string tip_privoda;
-    string tip_topliva;
-    int massa;
-    int obem_benzobaka;
-    int kolvo_mest;
+    char name[50];
+    char tip_privoda[50];
+    char tip_topliva[50];
+    double massa;
+    double obem_benzobaka;
+    double kolvo_mest;
     double razgon_do_100;
 };
 
 struct avto
 {
-    //voditel har1;
     motor har2;
     kolesa har3;
     korobka_peredach har4;
