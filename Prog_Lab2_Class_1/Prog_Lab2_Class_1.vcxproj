@@ -141,6 +141,9 @@
   <ItemGroup>
     <ClCompile Include="Prog_Lab2_Class_1.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="strukturki.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
