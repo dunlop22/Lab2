@@ -11,6 +11,11 @@
 
 using namespace std;
 
+//сделать привязку водителя к автомобилю
+//сделать удаление водителя
+
+
+
 //           while (getchar() != '\n');   - очистка буфера
 
 int gl_menu(int vsego, int kol_vo_vodit)
@@ -26,25 +31,19 @@ int gl_menu(int vsego, int kol_vo_vodit)
         {
             cout << "\n3) Просмотр информации об автомобилях";
         }
-
-        if (kol_vo_vodit > 0 && vsego <= 0)
-        {
-            cout << "\n3) Просмотр информации о водителях";
-        }
-        else if (kol_vo_vodit > 0 && vsego > 0)
+        if (kol_vo_vodit > 0)
         {
             cout << "\n4) Просмотр информации о водителях";
         }
-
-        if (vsego > 1 && kol_vo_vodit > 0)
+        if (vsego > 1)
         {
             cout << "\n5) Сравнение автомобилей";
         }
-        else if (vsego > 1 && kol_vo_vodit == 0)
+        if (kol_vo_vodit > 0)
         {
-            cout << "\n4) Сравнение автомобилей";
+            cout << "\n8) Удалить информацию о водителе";
         }
-        if (vsego > 1)
+        if (vsego > 0)
         {
             cout << "\n9) Удалить информацию об автомобиле";
         }
@@ -54,6 +53,7 @@ int gl_menu(int vsego, int kol_vo_vodit)
         }
         cout << "\n\nESC - выход";
         menu = _getch();
+
         if (menu == '1')
         {
             return 1;
@@ -66,23 +66,23 @@ int gl_menu(int vsego, int kol_vo_vodit)
         {
             return 3;
         }
-        else if (menu == '3')
+        if (menu == '4' && kol_vo_vodit > 0)
         {
             return 4;
         }
-        if (menu == '4' && vsego > 1 && kol_vo_vodit == 0)
+        if (menu == '5' && vsego > 1)
         {
             return 5;
         }
-        if (menu == '4' && kol_vo_vodit > 0 && vsego > 0)
+        if (menu == '8' && kol_vo_vodit > 0)
         {
-            return 6;
+            return 9;
         }
-        if (menu == '5' && vsego > 1 && kol_vo_vodit > 0)
+        if (menu == '9' && vsego > 0)
         {
-            return 7;
+            return 9;
         }
-        if (menu == '0' && vsego > 1)
+        if (menu == '0' && kol_vo_vodit > 0)
         {
             return 0;
         }
@@ -269,6 +269,7 @@ void new_koleso(int tekuchee, struct avto *mashina)
 void new_car(int tekuchee, struct avto *mashina, int *vsego)
 {
     system("cls");
+    tekuchee = *vsego;
     new_obchee(tekuchee, mashina);
     new_motor(tekuchee, mashina);
     new_koleso(tekuchee, mashina);
@@ -277,51 +278,73 @@ void new_car(int tekuchee, struct avto *mashina, int *vsego)
 }
 
 //функция добавления информации о новом водителе
-void new_voditel(int teck_voditel, struct voditel *vod, int *vsego_vodit)
+void new_voditel(int teck_voditel, struct voditel *vod, int *vsego_vodit, int red, int new_v)
 {
-    system("cls");
-    vod[teck_voditel].num_vod = teck_voditel;
-    cout << "Добавление информации о водителе\n\nВведите ФИО водителя: ";
-    gets_s(vod[teck_voditel].name);
-    while (strlen(vod[teck_voditel].name) == 0)
+    if (red == 0)
     {
-        printf("Неверно введен ФИО водителя, попробуйте еще: ");
+        system("cls");
+        cout << "Добавление информации о водителе\n\n";
+    }
+    if (red == 1 || new_v == 1)
+    {
+        
+        vod[teck_voditel].num_vod = teck_voditel;
+        cout << "Введите ФИО водителя : ";
         gets_s(vod[teck_voditel].name);
+        while (strlen(vod[teck_voditel].name) == 0)
+        {
+            printf("Неверно введен ФИО водителя, попробуйте еще: ");
+            gets_s(vod[teck_voditel].name);
+        }
     }
-
-    cout << "Введите возраст: ";
-    while (scanf("%lf", &vod[teck_voditel].age) != 1)
-    {
-        printf("Неверно введен возраст водителя, попробуйте еще: ");
-        while (getchar() != '\n');
-    }
-    while (getchar() != '\n');
     
-    cout << "Введите пол водителя (М/Ж): ";
-    gets_s(vod[teck_voditel].pol);
-    while (strlen(vod[teck_voditel].pol) == 0)
+    if (red == 2 || new_v == 1)
     {
-        printf("Неверно введен пол водителя, попробуйте еще: ");
-        gets_s(vod[teck_voditel].pol);
-    }
-
-    cout << "Введите статус Covid-19 (переболел/привит/неизвестно): ";
-    gets_s(vod[teck_voditel].covid_19);
-    while (strlen(vod[teck_voditel].covid_19) == 0)
-    {
-        printf("Неверно введен статус COVID-19, попробуйте еще: ");
-        gets_s(vod[teck_voditel].covid_19);
-    }
-
-    cout << "Введите стаж водителя: ";
-    while (scanf("%lf", &vod[teck_voditel].stag) != 1)
-    {
-        printf("Неверно введен стаж водителя, попробуйте еще: ");
+        cout << "Введите возраст: ";
+        while (scanf("%lf", &vod[teck_voditel].age) != 1)
+        {
+            printf("Неверно введен возраст водителя, попробуйте еще: ");
+            while (getchar() != '\n');
+        }
         while (getchar() != '\n');
     }
-    while (getchar() != '\n');
 
-    *vsego_vodit = *vsego_vodit + 1;
+    if (red == 3 || new_v == 1)
+    {
+        cout << "Введите пол водителя (М/Ж): ";
+        gets_s(vod[teck_voditel].pol);
+        while (strlen(vod[teck_voditel].pol) == 0)
+        {
+            printf("Неверно введен пол водителя, попробуйте еще: ");
+            gets_s(vod[teck_voditel].pol);
+        }
+    }
+    
+    if (red == 4 || new_v == 1)
+    {
+        cout << "Введите статус Covid-19 (переболел/привит/неизвестно): ";
+        gets_s(vod[teck_voditel].covid_19);
+        while (strlen(vod[teck_voditel].covid_19) == 0)
+        {
+            printf("Неверно введен статус COVID-19, попробуйте еще: ");
+            gets_s(vod[teck_voditel].covid_19);
+        }
+    }
+    
+    if (red == 5 || new_v == 1)
+    {
+        cout << "Введите стаж водителя: ";
+        while (scanf("%lf", &vod[teck_voditel].stag) != 1)
+        {
+            printf("Неверно введен стаж водителя, попробуйте еще: ");
+            while (getchar() != '\n');
+        }
+        while (getchar() != '\n');
+    }
+    if (new_v == 1)
+    {
+        *vsego_vodit = *vsego_vodit + 1;
+    }
 }
 
 //функция просмотра информации о водителях
@@ -334,12 +357,10 @@ void prosmotr_voditel(int vsego_vodit, struct voditel *vod)
         cout << "Водитель №" << i + 1;
         cout << "\nФИО: " << vod[i].name;
         cout << "\nВозраст: " << vod[i].age;
-        cout << "\nСтаж: " << vod[i].stag;
         cout << "\nПол: " << vod[i].pol;
-        cout << "\nСтатус Covid-19: " << vod[i].covid_19 << "\n***************************************\n\n";
-    }
-    cout << "\n\nДля возврата в меню нажмите любую клавишу.";
-    _getch();
+        cout << "\nСтатус Covid-19: " << vod[i].covid_19;
+        cout << "\nСтаж: " << vod[i].stag <<"\n***************************************\n\n";
+    } 
 }
 
 //функция вывода информации о двигателе
@@ -386,28 +407,67 @@ void prosmotr_avto(int vsego, struct avto *mashina)
 {
     int i;
     for (i = 0; i < vsego; i++)
-    {
+    { 
+        cout << "\nАвтомобиль №" << i + 1 << "\n";
         vivod_obchee(i, mashina);
         vivod_motor(i, mashina);
         vivod_kolesa(i, mashina);
         vivod_korobka(i, mashina);
+        cout << "\n****************************\n";
     }
-    cout << "Нажмите любую клавишу для возврата в меню";
-    _getch();
 }
 
 //функция редактирования информации о водителе
 void red_voditel(struct voditel *vod, int *kol_vo_vodit)
 {
     int numb = 0;
-    prosmotr_voditel(*kol_vo_vodit, vod);
-    cout << "Введите номер водителя для изменения: ";
+    int numb_punkt = 0;
     do
     {
+        prosmotr_voditel(*kol_vo_vodit, vod);
+        cout << "Введите номер водителя для изменения: ";
         scanf("%d", &numb);
         while (getchar() != '\n');
-    } while (numb < 1 && numb > *kol_vo_vodit);
+    } while (numb < 1 || numb > *kol_vo_vodit);
+    do
+    {
+        system("cls");
+        cout << "\n1) ФИО (" << vod[numb - 1].name << ")";
+        cout << "\n2) Возраст (" << vod[numb - 1].age << ")";
+        cout << "\n3) Пол (" << vod[numb - 1].pol << ")";
+        cout << "\n4) Статус Covid-19  (" << vod[numb - 1].covid_19 << ")";
+        cout << "\n5) Стаж (" << vod[numb - 1].stag << ")";
+        cout << "\n\nВыберите пункт для редактирования информации: ";
+        scanf("%d", &numb_punkt);
+        while (getchar() != '\n');
+    } while (numb_punkt < 1 || numb_punkt > 5);
 
+    new_voditel(numb - 1, vod, kol_vo_vodit, numb_punkt, 0);
+}
+
+//функция удаления информации об авто
+void del_avto(struct avto* mashina, int *vsego)
+{
+    int numb, i;
+    do
+    {
+        system("cls");
+        prosmotr_avto(*vsego, mashina);
+        cout << "\n\nВведите номер авто для удаления: ";
+        scanf("%d", &numb);
+        while (getchar() != '\n');
+    } while (numb < 1 || numb > *vsego);
+
+    //перенос всех машин вниз
+    for (i = numb - 1; i < *vsego - 1; i++)
+    {
+        struct avto *avto_dubl;
+        avto_dubl = (avto*)malloc(1 * sizeof(avto));
+        *avto_dubl = mashina[i];
+        mashina[i] = mashina[i + 1];
+    }
+    *vsego = *vsego - 1;
+    
 }
 
 //функция сравнения двух автомобилей
@@ -442,36 +502,40 @@ int main()
             //редактирование информации о водителе
             //вывести список для выбора автомобиля для редактирования   
         }
-        if (menu == 1)
+        if (menu == 1)  //добавление нового автомобиля
         {
             new_car(tekuchee, mashina, &vsego);
         }
-        else if (menu == 2)
+        else if (menu == 2) //добавление нового водителя
         {
-            new_voditel(teck_voditel, vod, &kol_vo_vodit);
-            //prosmotr_avto(vsego);
+            new_voditel(teck_voditel, vod, &kol_vo_vodit, 0, 1);
         }
-        else if (menu == 3)
+        else if (menu == 3) //просмотр информации об автомобилях
         {
+            system("cls");
             prosmotr_avto(vsego, mashina);
+            cout << "\n\nНажмите любую клавишу для возврата в меню";
+            _getch();
         }
-        else if (menu == 4)
+        else if (menu == 4) //Просмотр информации о водителе
         {
+            system("cls");
             prosmotr_voditel(kol_vo_vodit, vod);
+            cout << "\n\nДля возврата в меню нажмите любую клавишу.";
+            _getch();
         }
-        else if (menu == 5)
+        else if (menu == 5) //сравнение двух автомобилей
         {
             cout << "сравнение автомобилей";
             _getch();
         }
-        else if (menu == 6)
+        if (menu == 8)  //удаление информации о водителе
         {
-            //prosmotr_voditel(kol_vo_vodit, &vod);
+            del_vod();
         }
-        else if (menu == 7)
+        if (menu == 9)  //удаление информации об автомобиле
         {
-            cout << "сравнение автомобилей";
-            _getch();
+            del_avto(mashina, &vsego);
         }
         /*
         else if (menu == 3)
